@@ -3,83 +3,90 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fractal Video Generator</title>
+    <title>Fractal Zoom Explorer</title>
     <link rel="stylesheet" href="src/styles.css" />
   </head>
   <body>
     <main class="app-shell">
-      <section class="stage-panel" aria-label="Animated fractal canvas">
+      <section class="stage-panel" aria-label="Static fractal canvas">
         <canvas id="fractalCanvas" width="900" height="900"></canvas>
-        <div class="hud">
-          <span id="presetLabel">Classic Mandelbrot</span>
-          <span id="stats">0 fps</span>
+        <div class="hud" aria-live="polite">
+          <span id="fractalLabel">Mandelbrot Set</span>
+          <span id="zoomLabel">1.00×</span>
+          <span id="statusLabel">Ready</span>
         </div>
       </section>
 
       <aside class="control-panel" aria-label="Fractal controls">
-        <h1>Fractal Video Generator</h1>
+        <p class="eyebrow">Static image explorer</p>
+        <h1>Fractal Zoom Explorer</h1>
         <p>
-          Create evolving, psychedelic fractal loops with a morphing Mandelbrot/Julia renderer.
+          Generate a still fractal image, then zoom into the mathematical view.
+          Scroll to zoom, drag to pan, and save the current view as a PNG.
         </p>
 
         <label>
-          Preset
-          <select id="preset">
-            <option value="mandelbrot">Classic Mandelbrot</option>
-            <option value="seahorse">Seahorse Valley</option>
-            <option value="julia">Electric Julia</option>
+          Fractal
+          <select id="fractalType">
+            <option value="mandelbrot" selected>Mandelbrot Set</option>
             <option value="burningShip">Burning Ship</option>
+            <option value="julia">Julia Set</option>
           </select>
         </label>
 
         <label>
           Palette
           <select id="palette">
-            <option value="nebula">Nebula</option>
-            <option value="lava">Lava</option>
-            <option value="aurora">Aurora</option>
+            <option value="cosmic" selected>Cosmic</option>
+            <option value="ember">Ember</option>
+            <option value="ocean">Ocean</option>
             <option value="mono">Monochrome</option>
           </select>
         </label>
 
         <label>
-          Quality
+          Image size
           <select id="resolution">
-            <option value="540" selected>540x540 fast</option>
-            <option value="720">720x720 balanced</option>
-            <option value="900">900x900 crisp</option>
-            <option value="1200">1200x1200 export</option>
+            <option value="600">600×600 fast</option>
+            <option value="900" selected>900×900 balanced</option>
+            <option value="1200">1200×1200 crisp</option>
+            <option value="1600">1600×1600 export</option>
           </select>
         </label>
 
         <label>
-          Iterations <output id="iterationOutput">180</output>
-          <input id="iterations" type="range" min="40" max="420" value="180" />
+          Iterations <output id="iterationOutput">420</output>
+          <input id="iterations" type="range" min="80" max="2500" step="20" value="420" />
         </label>
 
-        <label>
-          Zoom speed <output id="speedOutput">0.45</output>
-          <input id="speed" type="range" min="0" max="120" value="45" />
+        <label class="checkbox-row">
+          <input id="autoIterations" type="checkbox" checked />
+          <span>Increase iterations automatically while zooming</span>
         </label>
 
-        <label>
-          Glow <output id="glowOutput">0.60</output>
-          <input id="glow" type="range" min="0" max="100" value="60" />
-        </label>
-
-        <label>
-          Trail <output id="trailOutput">0.22</output>
-          <input id="trail" type="range" min="0" max="90" value="22" />
-        </label>
+        <dl class="view-readout">
+          <div>
+            <dt>Center</dt>
+            <dd id="centerOutput">−0.500000, 0.000000</dd>
+          </div>
+          <div>
+            <dt>Span</dt>
+            <dd id="spanOutput">3.200000</dd>
+          </div>
+          <div>
+            <dt>Precision</dt>
+            <dd id="precisionOutput">Normal</dd>
+          </div>
+        </dl>
 
         <div class="button-row">
-          <button id="toggleAnimation" type="button">Pause</button>
-          <button id="randomize" type="button">Randomize</button>
+          <button id="resetView" type="button">Reset View</button>
           <button id="savePng" type="button">Save PNG</button>
         </div>
 
         <p class="hint">
-          Tip: use a screen recorder while the animation plays to make a full fractal video.
+          Tip: double-click the canvas to zoom in. Use Shift + double-click to zoom out.
+          More fractal types can be added in the renderer registry.
         </p>
       </aside>
     </main>
