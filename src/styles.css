@@ -1,7 +1,7 @@
 :root {
   color-scheme: dark;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #060712;
+  background: #050711;
   color: #f5f7ff;
 }
 
@@ -13,16 +13,16 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(circle at 20% 15%, rgba(106, 38, 255, 0.38), transparent 34rem),
-    radial-gradient(circle at 85% 75%, rgba(0, 245, 212, 0.2), transparent 36rem),
-    #060712;
+    radial-gradient(circle at 18% 12%, rgba(102, 62, 255, 0.34), transparent 32rem),
+    radial-gradient(circle at 84% 78%, rgba(0, 214, 201, 0.18), transparent 34rem),
+    #050711;
 }
 
 .app-shell {
   display: grid;
-  grid-template-columns: minmax(320px, 1fr) 360px;
+  grid-template-columns: minmax(320px, 1fr) 380px;
   gap: 1.25rem;
-  width: min(1380px, calc(100vw - 2rem));
+  width: min(1400px, calc(100vw - 2rem));
   min-height: 100vh;
   margin: 0 auto;
   padding: 1rem 0;
@@ -32,7 +32,7 @@ body {
 .control-panel {
   border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: 24px;
-  background: rgba(7, 9, 23, 0.74);
+  background: rgba(7, 9, 23, 0.78);
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(18px);
 }
@@ -43,14 +43,21 @@ body {
   place-items: center;
   overflow: hidden;
   min-height: calc(100vh - 2rem);
+  padding: 1rem;
 }
 
 canvas {
-  width: min(100%, calc(100vh - 3rem));
+  width: min(100%, calc(100vh - 4rem));
   aspect-ratio: 1;
   border-radius: 20px;
-  box-shadow: 0 0 70px rgba(88, 166, 255, 0.24);
+  box-shadow: 0 0 70px rgba(88, 166, 255, 0.22);
   background: #000;
+  cursor: grab;
+  touch-action: none;
+}
+
+canvas.is-dragging {
+  cursor: grabbing;
 }
 
 .hud {
@@ -58,14 +65,15 @@ canvas {
   left: 1rem;
   right: 1rem;
   bottom: 1rem;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
   gap: 1rem;
   padding: 0.8rem 1rem;
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.42);
-  color: rgba(255, 255, 255, 0.82);
+  background: rgba(0, 0, 0, 0.48);
+  color: rgba(255, 255, 255, 0.86);
   font-size: 0.88rem;
 }
 
@@ -74,10 +82,19 @@ canvas {
   padding: 1.4rem;
 }
 
+.eyebrow {
+  margin: 0 0 0.6rem;
+  color: #86f7ff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
 h1 {
   margin: 0 0 0.7rem;
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  line-height: 1;
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  line-height: 0.95;
 }
 
 p {
@@ -89,7 +106,7 @@ label {
   display: grid;
   gap: 0.45rem;
   margin: 0 0 1rem;
-  color: rgba(245, 247, 255, 0.86);
+  color: rgba(245, 247, 255, 0.88);
   font-weight: 650;
 }
 
@@ -124,9 +141,53 @@ input[type="range"] {
   accent-color: #7c3cff;
 }
 
+.checkbox-row {
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: 0.65rem;
+  font-weight: 600;
+}
+
+.checkbox-row input {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.12rem;
+  accent-color: #7c3cff;
+}
+
+.view-readout {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.15rem 0;
+  padding: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.view-readout div {
+  display: grid;
+  grid-template-columns: 5.2rem 1fr;
+  gap: 0.8rem;
+}
+
+.view-readout dt {
+  color: rgba(245, 247, 255, 0.56);
+  font-size: 0.86rem;
+}
+
+.view-readout dd {
+  margin: 0;
+  color: #f5f7ff;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.86rem;
+  text-align: right;
+  word-break: break-word;
+}
+
 .button-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 0.65rem;
   margin-top: 1.3rem;
 }
@@ -162,5 +223,21 @@ button:hover {
 
   canvas {
     width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .hud {
+    grid-template-columns: 1fr;
+    border-radius: 18px;
+  }
+
+  .view-readout div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+
+  .view-readout dd {
+    text-align: left;
   }
 }
